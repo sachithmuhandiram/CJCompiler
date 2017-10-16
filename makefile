@@ -4,7 +4,7 @@ all:
 	sudo gcc -c lex.yy.c y.tab.c
 	sudo gcc y.tab.o lex.yy.o compiler.c -o testing
 grammar:
-	sudo yacc -dy grammar.y --graph
+	sudo yacc -vdy grammar.y --graph
 
 lex:
 	sudo flex lex.l

@@ -47,29 +47,23 @@ extern int yydebug;
   {
     INTEGER = 258,
     CODE = 259,
-    PORT = 260,
-    FOR = 261,
-    TURN = 262,
-    SEND = 263,
-    OPRT = 264,
-    OPT = 265,
-    ASSIG = 266,
-    TIME = 267,
-    SPCL = 268
+    SPECIAL = 260,
+    OPRTURN = 261,
+    OPRSEND = 262,
+    OPRON = 263,
+    PORT = 264,
+    FOR = 265
   };
 #endif
 /* Tokens.  */
 #define INTEGER 258
 #define CODE 259
-#define PORT 260
-#define FOR 261
-#define TURN 262
-#define SEND 263
-#define OPRT 264
-#define OPT 265
-#define ASSIG 266
-#define TIME 267
-#define SPCL 268
+#define SPECIAL 260
+#define OPRTURN 261
+#define OPRSEND 262
+#define OPRON 263
+#define PORT 264
+#define FOR 265
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -83,7 +77,7 @@ union YYSTYPE
     char *str;                /* symbol table index */
     nodeType *nPtr;             /* node pointer */
 
-#line 87 "y.tab.h" /* yacc.c:1909  */
+#line 81 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

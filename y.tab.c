@@ -68,13 +68,13 @@
     #include <stdio.h>
     #include <stdarg.h>
     #include <stdlib.h>
-    int yylex(void);
-    void yyerror(char *);
-    char *name[10];
+//    char *name[10];
+
+void  startCompiler();
     
 /* prototypes */
 nodeType *enm(char* c);
-nodeType *opr(int oper, int nops, ...);
+nodeType *opr(int oper,int nops,...);
 nodeType *id(int i);
 nodeType *con(int value);
 nodeType *cmd(char *c);
@@ -123,29 +123,23 @@ extern int yydebug;
   {
     INTEGER = 258,
     CODE = 259,
-    PORT = 260,
-    FOR = 261,
-    TURN = 262,
-    SEND = 263,
-    OPRT = 264,
-    OPT = 265,
-    ASSIG = 266,
-    TIME = 267,
-    SPCL = 268
+    SPECIAL = 260,
+    OPRTURN = 261,
+    OPRSEND = 262,
+    OPRON = 263,
+    PORT = 264,
+    FOR = 265
   };
 #endif
 /* Tokens.  */
 #define INTEGER 258
 #define CODE 259
-#define PORT 260
-#define FOR 261
-#define TURN 262
-#define SEND 263
-#define OPRT 264
-#define OPT 265
-#define ASSIG 266
-#define TIME 267
-#define SPCL 268
+#define SPECIAL 260
+#define OPRTURN 261
+#define OPRSEND 262
+#define OPRON 263
+#define PORT 264
+#define FOR 265
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -159,7 +153,7 @@ union YYSTYPE
     char *str;                /* symbol table index */
     nodeType *nPtr;             /* node pointer */
 
-#line 163 "y.tab.c" /* yacc.c:355  */
+#line 157 "y.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -176,7 +170,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 180 "y.tab.c" /* yacc.c:358  */
+#line 174 "y.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -418,21 +412,21 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  3
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   20
+#define YYLAST   2
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  14
+#define YYNTOKENS  11
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  10
+#define YYNNTS  5
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  17
+#define YYNRULES  7
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  23
+#define YYNSTATES  8
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   268
+#define YYMAXUTOK   265
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -467,15 +461,14 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11,    12,    13
+       5,     6,     7,     8,     9,    10
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    36,    36,    39,    40,    43,    44,    45,    46,    47,
-      50,    51,    54,    55,    58,    62,    64,    66
+       0,    41,    41,    44,    45,    48,    51,    73
 };
 #endif
 
@@ -484,10 +477,9 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "INTEGER", "CODE", "PORT", "FOR", "TURN",
-  "SEND", "OPRT", "OPT", "ASSIG", "TIME", "SPCL", "$accept", "input",
-  "statement", "stmt", "stmt_list", "operation", "opr", "pin", "location",
-  "duration", YY_NULLPTR
+  "$end", "error", "$undefined", "INTEGER", "CODE", "SPECIAL", "OPRTURN",
+  "OPRSEND", "OPRON", "PORT", "FOR", "$accept", "input", "function",
+  "stmt", "location", YY_NULLPTR
 };
 #endif
 
@@ -497,14 +489,14 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,   267,   268
+     265
 };
 # endif
 
-#define YYPACT_NINF -10
+#define YYPACT_NINF -9
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-10)))
+  (!!((Yystate) == (-9)))
 
 #define YYTABLE_NINF -1
 
@@ -515,9 +507,7 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -10,     1,    -1,   -10,   -10,    -4,   -10,   -10,   -10,   -10,
-     -10,    -1,     6,    -1,   -10,   -10,   -10,    -1,   -10,    -1,
-      -1,   -10,    -1
+      -9,     0,    -8,    -9,    -1,    -9,    -9,    -9
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -525,21 +515,19 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       4,     0,     2,     1,    16,     0,    17,    12,    13,    14,
-       3,     0,     0,     0,     9,     5,    10,     6,    15,     0,
-       8,    11,     7
+       4,     0,     2,     1,     0,     3,     7,     6
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -10,   -10,   -10,    -2,    -9,   -10,   -10,   -10,   -10,   -10
+      -9,    -9,    -9,    -9,    -9
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     1,     2,    16,    17,    11,    12,    19,    13,    14
+      -1,     1,     2,     5,     7
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -547,39 +535,31 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      10,     3,     4,     5,    20,     6,     7,     8,     9,    15,
-      22,    18,     0,     0,     0,    21,     0,     0,    21,     0,
-      21
+       3,     4,     6
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_uint8 yycheck[] =
 {
-       2,     0,     3,     4,    13,     6,     7,     8,     9,    13,
-      19,     5,    -1,    -1,    -1,    17,    -1,    -1,    20,    -1,
-      22
+       0,     9,     3
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    15,    16,     0,     3,     4,     6,     7,     8,     9,
-      17,    19,    20,    22,    23,    13,    17,    18,     5,    21,
-      18,    17,    18
+       0,    12,    13,     0,     9,    14,     3,    15
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    14,    15,    16,    16,    17,    17,    17,    17,    17,
-      18,    18,    19,    19,    20,    21,    22,    23
+       0,    11,    12,    13,    13,    14,    14,    15
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     1,     2,     0,     2,     2,     3,     2,     1,
-       1,     2,     1,     1,     1,     1,     1,     1
+       0,     2,     1,     2,     0,     0,     2,     1
 };
 
 
@@ -1256,79 +1236,31 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 36 "grammar.y" /* yacc.c:1646  */
-    { exit(0); }
-#line 1262 "y.tab.c" /* yacc.c:1646  */
+#line 41 "grammar.y" /* yacc.c:1646  */
+    { exit(0);}
+#line 1242 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 39 "grammar.y" /* yacc.c:1646  */
+#line 44 "grammar.y" /* yacc.c:1646  */
     { ex((yyvsp[0].nPtr)); freeNode((yyvsp[0].nPtr));}
-#line 1268 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 5:
-#line 43 "grammar.y" /* yacc.c:1646  */
-    { startCompiler(); }
-#line 1274 "y.tab.c" /* yacc.c:1646  */
+#line 1248 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 44 "grammar.y" /* yacc.c:1646  */
-    { }
-#line 1280 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 8:
-#line 46 "grammar.y" /* yacc.c:1646  */
+#line 51 "grammar.y" /* yacc.c:1646  */
     { (yyval.nPtr) = opr(PORT,1,(yyvsp[0].nPtr)); }
-#line 1286 "y.tab.c" /* yacc.c:1646  */
+#line 1254 "y.tab.c" /* yacc.c:1646  */
     break;
 
-  case 9:
-#line 47 "grammar.y" /* yacc.c:1646  */
-    {printf("last");}
-#line 1292 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 12:
-#line 54 "grammar.y" /* yacc.c:1646  */
-    { printf("turn was taken");}
-#line 1298 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 13:
-#line 55 "grammar.y" /* yacc.c:1646  */
-    {}
-#line 1304 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 14:
-#line 58 "grammar.y" /* yacc.c:1646  */
-    { printf(" on was taken ");}
-#line 1310 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 15:
-#line 62 "grammar.y" /* yacc.c:1646  */
-    { printf(" port was taken ");}
-#line 1316 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 16:
-#line 64 "grammar.y" /* yacc.c:1646  */
-    { (yyval.nPtr) = con((yyvsp[0].iValue));}
-#line 1322 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 17:
-#line 66 "grammar.y" /* yacc.c:1646  */
-    { printf("evertything was taken"); }
-#line 1328 "y.tab.c" /* yacc.c:1646  */
+  case 7:
+#line 73 "grammar.y" /* yacc.c:1646  */
+    { (yyval.nPtr) = con((yyvsp[0].iValue)); }
+#line 1260 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1332 "y.tab.c" /* yacc.c:1646  */
+#line 1264 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1556,7 +1488,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 70 "grammar.y" /* yacc.c:1906  */
+#line 82 "grammar.y" /* yacc.c:1906  */
 
 
 nodeType *con(int value) {
@@ -1588,25 +1520,26 @@ nodeType *id(int i) {
 }
 
 /*entity name */
+/*
 nodeType *enm(char *c) {
     nodeType *p;
 
     /* allocate node */
-    
+  /*  
     if ((p = malloc(sizeof(nodeType))) == NULL)
         yyerror("out of memory");
 
     /* copy information */ 
-    
+    /*
     p->type = typeEName;
     p->ename.en = c;
 
 
     return p;
 }
-
+*/
 /*command name */
-nodeType *cmd(char *c) {
+nodeType *cmd(char *c) {//nodeType *cmd(char *c) {
     nodeType *p;
 
     /* allocate node */
@@ -1618,20 +1551,18 @@ nodeType *cmd(char *c) {
     
     p->type = typeCmd;
     p->cmd.cm = c;
-
-
     return p;
 }
 
 
 
-nodeType *opr(int oper, int nops, ...) {
+nodeType *opr(int oper,int nops,...) {
     va_list ap;
     nodeType *p;
     int i;
 
     /* allocate node, extending op array */
-    if ((p = malloc(sizeof(nodeType) + (nops-1) * sizeof(nodeType *))) == NULL)
+    if ((p = malloc(sizeof(nodeType) )) == NULL)
         yyerror("out of memory");
 
     /* copy information */
@@ -1640,7 +1571,7 @@ nodeType *opr(int oper, int nops, ...) {
     p->opr.nops = nops;
     va_start(ap, nops);
     for (i = 0; i < nops; i++)
-        p->opr.op[i] = va_arg(ap, nodeType*);
+        p->opr.op[i]= va_arg(ap, nodeType*);
     va_end(ap);
     return p;
 }

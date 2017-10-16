@@ -3,6 +3,7 @@
 #include "y.tab.h"
 #include <stdlib.h>
 #include <string.h>
+#define YYSTYPE char *
 void yyerror(char *);
 %}
 
@@ -10,18 +11,18 @@ code            "code"
 special         ":"
 turn		"turn"
 send		"send"
-oprt            "on"
-location        "pin"
+on              "on"
+pin     	"pin"
 for             "for"
-num		"[0-9]+"
+num		[0-9]+
 
 %%
 {code}          {return CODE;}
-{special}       {return SPCL;}
-{turn}		{return TURN;}
-{send}		{return SEND;}	
-{oprt}          {return OPRT;}
-{location}	{return PORT;}
+{special}       {return SPECIAL; }
+{turn}		{return OPRTURN;}
+{send}		{return OPRSEND;}	
+{on}            {return OPRON;}
+{pin}		{return PORT;}
 {for}           {return FOR;}
 {num}		{ yylval.iValue = atoi(yytext); return INTEGER;}
 %%
