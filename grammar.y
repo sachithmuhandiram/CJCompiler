@@ -46,10 +46,10 @@ function : function stmt  { ex($2); freeNode($2);}
 	;
 
 stmt	: 
-/*	  CODE SPECIAL 		{ startCompiler(); }*/
-/*	| OPRTURN operation    { $$ = opr(OPRTURN,1,$2); }*/
+	  CODE SPECIAL 		{ startCompiler(); }
+	| OPRTURN operation    { $$ = opr(OPRTURN,1,$2); }
 	| PORT location     	{ $$ = opr(PORT,1,$2); }
-/*	| FOR duration 			{}*/
+	| FOR duration 			{$$ = opr(FOR,1,$2);}
 
 	;
 
@@ -71,11 +71,9 @@ operation :
 /*pin	: PORT location { $$ = opr(PORT,1,$2);}*/
 
 location : INTEGER  { $$ = con($1); }
-	  
+ 
 		;
-
-
-/*duration : INTEGER { $$=con($1); };*/
+duration : INTEGER { $$=con($1); };
 	  
 
 

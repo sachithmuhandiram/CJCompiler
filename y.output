@@ -1,36 +1,19 @@
 Nonterminals useless in grammar
 
    stmt_list
-   operation
-   duration
    oper
    pin
 
 
 Terminals unused in grammar
 
-   CODE
-   SPECIAL
-   OPRTURN
    OPRSEND
-   OPRON
-   FOR
 
 
 Rules useless in grammar
 
-    7 stmt_list: stmt
-    8          | %empty
-
-    9 operation: OPRON
-
-
-Rules useless in parser due to conflicts
-
-    4 stmt: %empty
-
-
-State 2 conflicts: 1 shift/reduce, 1 reduce/reduce
+   11 stmt_list: stmt
+   12          | %empty
 
 
 Grammar
@@ -42,24 +25,30 @@ Grammar
     2 function: function stmt
     3         | %empty
 
-    4 stmt: %empty
-    5     | PORT location
+    4 stmt: CODE SPECIAL
+    5     | OPRTURN operation
+    6     | PORT location
+    7     | FOR duration
 
-    6 location: INTEGER
+    8 operation: OPRON
+
+    9 location: INTEGER
+
+   10 duration: INTEGER
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
 error (256)
-INTEGER (258) 6
-CODE (259)
-SPECIAL (260)
-OPRTURN (261)
+INTEGER (258) 9 10
+CODE (259) 4
+SPECIAL (260) 4
+OPRTURN (261) 5
 OPRSEND (262)
-OPRON (263)
-PORT (264) 5
-FOR (265)
+OPRON (263) 8
+PORT (264) 6
+FOR (265) 7
 
 
 Nonterminals, with rules where they appear
@@ -71,9 +60,13 @@ input (12)
 function (13)
     on left: 2 3, on right: 1 2
 stmt (14)
-    on left: 4 5, on right: 2
-location (15)
-    on left: 6, on right: 5
+    on left: 4 5 6 7, on right: 2
+operation (15)
+    on left: 8, on right: 5
+location (16)
+    on left: 9, on right: 6
+duration (17)
+    on left: 10, on right: 7
 
 
 State 0
@@ -98,14 +91,14 @@ State 2
     1 input: function .
     2 function: function . stmt
 
-    PORT  shift, and go to state 4
+    CODE     shift, and go to state 4
+    OPRTURN  shift, and go to state 5
+    PORT     shift, and go to state 6
+    FOR      shift, and go to state 7
 
-    $end      reduce using rule 1 (input)
-    $end      [reduce using rule 4 (stmt)]
-    PORT      [reduce using rule 4 (stmt)]
     $default  reduce using rule 1 (input)
 
-    stmt  go to state 5
+    stmt  go to state 8
 
 
 State 3
@@ -117,29 +110,89 @@ State 3
 
 State 4
 
-    5 stmt: PORT . location
+    4 stmt: CODE . SPECIAL
 
-    INTEGER  shift, and go to state 6
-
-    location  go to state 7
+    SPECIAL  shift, and go to state 9
 
 
 State 5
+
+    5 stmt: OPRTURN . operation
+
+    OPRON  shift, and go to state 10
+
+    operation  go to state 11
+
+
+State 6
+
+    6 stmt: PORT . location
+
+    INTEGER  shift, and go to state 12
+
+    location  go to state 13
+
+
+State 7
+
+    7 stmt: FOR . duration
+
+    INTEGER  shift, and go to state 14
+
+    duration  go to state 15
+
+
+State 8
 
     2 function: function stmt .
 
     $default  reduce using rule 2 (function)
 
 
-State 6
+State 9
 
-    6 location: INTEGER .
+    4 stmt: CODE SPECIAL .
 
-    $default  reduce using rule 6 (location)
+    $default  reduce using rule 4 (stmt)
 
 
-State 7
+State 10
 
-    5 stmt: PORT location .
+    8 operation: OPRON .
+
+    $default  reduce using rule 8 (operation)
+
+
+State 11
+
+    5 stmt: OPRTURN operation .
 
     $default  reduce using rule 5 (stmt)
+
+
+State 12
+
+    9 location: INTEGER .
+
+    $default  reduce using rule 9 (location)
+
+
+State 13
+
+    6 stmt: PORT location .
+
+    $default  reduce using rule 6 (stmt)
+
+
+State 14
+
+   10 duration: INTEGER .
+
+    $default  reduce using rule 10 (duration)
+
+
+State 15
+
+    7 stmt: FOR duration .
+
+    $default  reduce using rule 7 (stmt)

@@ -7,7 +7,7 @@ char *entityName;   // variable to hold the current entity name
 FILE *f;
 int port;
 int inputs;
-int outputs;
+int time;
 int ex(nodeType *p) {
 
 
@@ -34,8 +34,8 @@ break;
         case OPRTURN:
 //	operation =p->opr.op[0]->con.value; 
                 f = fopen("test.ino", "a");
-		port = p->opr.op[0]->con.value;
-                   fprintf(f,"int led = %d\n",port);
+//		port = p->opr.op[0]->con.value;
+//                   fprintf(f,"int led = %d\n",port);
         //           fprintf(f,"\nvoid setup(){" );
         //           fprintf(f,"\npinMode(led,OUTPUT);");
           //         fprintf(f,"\n}\n");
@@ -54,50 +54,34 @@ break;
    case PORT:
 //            FILE *f;
             f = fopen("test.ino", "a");
-printf("port taken");
   //          fprintf(f,"\n\tPORT ( ");
             port = p->opr.op[0]->con.value;
-            //outputs = p->opr.op[1]->con.value;
-        //    int  totalIO = inputs+outputs, currentIO = 0 ;
-          //  //generate inputs
-           // for( i=0; i<inputs; i++){
-            //    currentIO++;
-printf("port taken, %d",port);
-
-              //  if(currentIO == totalIO) {
-                    fprintf(f,"\n\t\tint LED=%d;", port );
-		    fprintf(f,"\n\t\tint LED=%d;", outputs );
-                //} //else {
-                  //  fprintf(f,"\n\t\tIN%d\t: IN STD_LOGIC;", i );
-               // }
-           // }
-            //generate outputs
-           // for( i=0; i<outputs; i++){
-             //   currentIO++;
-
-               // if(currentIO == totalIO) {
-                 //   fprintf(f,"\n\t\tOU%d\t: OUT STD_LOGIC );", i );
-                //} else {
-                  //  fprintf(f,"\n\t\tOU%d\t: OUT STD_LOGIC;", i );
-               // }
-           // }
-            //fprintf(f,"\n\tEND %s ; \n",entityName);
+                    fprintf(f,"\n\tint LED=%d;\n", port );
+		    fprintf(f,"\n\tvoid setup() {\n" );
+                    fprintf(f,"\t\tpinMode(LED,OUTPUT);\n" );
+                    fprintf(f,"\t}\n" );
             fclose(f);
             ex(p->opr.op[0]);
             break;
 
-  //      case OPRT:
-//            function = p->opr.op[0]->ename.en;
-  //          f = fopen("vhdl.vhd", "a");
-    //        fprintf(f,"\n\tARCHITECTURE Str OF %s IS \n",entityName );
-      //      fclose(f);
+      case FOR:
+            time = (p->opr.op[0]->con.value)*1000;	//to ms
+            f = fopen("test.ino", "a");
+            fprintf(f,"\n\t void loop() {  \n");
+	    fprintf(f,"\t\t digitalWrite(LED,HIGH);  \n");
+	    fprintf(f,"\t\t delay(%d);  \n",time);
+	    fprintf(f,"\t\t digitalWrite(LED,LOW);  \n");
+	    fprintf(f,"\t\t delay(%d);  \n",time);
+	    fprintf(f,"\n\t\t}  \n");
+
+            fclose(f);
         //    ex(p->opr.op[0]);
           //  f = fopen("vhdl.vhd", "a");
            // fprintf(f,"\n\tEND Str ;\n" );
            // fclose(f);
 
 
-//            break;
+            break;
 
 
         default:

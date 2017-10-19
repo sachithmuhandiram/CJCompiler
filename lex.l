@@ -15,7 +15,7 @@ on              "on"
 pin     	"pin"
 for             "for"
 num		[0-9]+
-
+ignore		[\t\n]+
 %%
 {code}          {return CODE;}
 {special}       {return SPECIAL; }
@@ -25,6 +25,7 @@ num		[0-9]+
 {pin}		{return PORT;}
 {for}           {return FOR;}
 {num}		{ yylval.iValue = atoi(yytext); return INTEGER;}
+{ignore}	{ ;}
 %%
 
 int yywrap(void) {
