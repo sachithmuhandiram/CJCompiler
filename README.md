@@ -7,7 +7,13 @@ In this initial step, it can only create simple arduino blinking programs.
 
 # Example 
 
-code : `turn on pin 13 for 5`
+Makefile will generate executable file called `testing`. To run project.
+
+`./testing`
+
+Then 
+
+`code : turn on pin 13 for 5`
 
 This will convert into equivelent arduino code which keeps port `13` high for `5s` by this compiler.
 

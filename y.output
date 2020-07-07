@@ -1,13 +1,13 @@
 Nonterminals useless in grammar
 
-   stmt_list
-   oper
-   pin
+    stmt_list
+    oper
+    pin
 
 
 Terminals unused in grammar
 
-   OPRSEND
+    OPRSEND
 
 
 Rules useless in grammar
@@ -39,34 +39,40 @@ Grammar
 
 Terminals, with rules where they appear
 
-$end (0) 0
-error (256)
-INTEGER (258) 9 10
-CODE (259) 4
-SPECIAL (260) 4
-OPRTURN (261) 5
-OPRSEND (262)
-OPRON (263) 8
-PORT (264) 6
-FOR (265) 7
+    $end (0) 0
+    error (256)
+    INTEGER <iValue> (258) 9 10
+    CODE (259) 4
+    SPECIAL (260) 4
+    OPRTURN (261) 5
+    OPRSEND (262)
+    OPRON (263) 8
+    PORT (264) 6
+    FOR (265) 7
 
 
 Nonterminals, with rules where they appear
 
-$accept (11)
-    on left: 0
-input (12)
-    on left: 1, on right: 0
-function (13)
-    on left: 2 3, on right: 1 2
-stmt (14)
-    on left: 4 5 6 7, on right: 2
-operation (15)
-    on left: 8, on right: 5
-location (16)
-    on left: 9, on right: 6
-duration (17)
-    on left: 10, on right: 7
+    $accept (11)
+        on left: 0
+    input (12)
+        on left: 1
+        on right: 0
+    function (13)
+        on left: 2 3
+        on right: 1 2
+    stmt <nPtr> (14)
+        on left: 4 5 6 7
+        on right: 2
+    operation <nPtr> (15)
+        on left: 8
+        on right: 5
+    location <nPtr> (16)
+        on left: 9
+        on right: 6
+    duration <nPtr> (17)
+        on left: 10
+        on right: 7
 
 
 State 0
